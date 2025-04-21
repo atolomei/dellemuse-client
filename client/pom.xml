@@ -1,0 +1,113 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>dellemuse</groupId>
+  <artifactId>client</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>dellemuse-client</name>
+
+	<description>
+
+
+	</description>
+
+	<url>https://kbee.io</url>
+
+
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+
+  <properties>
+	
+
+		
+    <dellemuse-client-version>0.1-beta</dellemuse-client-version>
+  	<dellemuse-model-version>0.1-beta</dellemuse-model-version>    
+
+
+	<httpasyncclient-version>4.1.5</httpasyncclient-version>
+	<google-http-client.version>1.44.2</google-http-client.version>
+
+
+	<java-version>17</java-version>
+	
+	<junit-version>5.10.1</junit-version>
+
+
+
+
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.release>17</maven.compiler.release>
+
+	<maven.test.skip>true</maven.test.skip>
+
+	<okhttp.version>4.12.0</okhttp.version>
+			
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+
+    
+  </properties>
+
+
+	<developers>
+        <developer>
+            <id>atolomei</id>
+            <name>Alejandro Tolomei</name>
+            <email>atolomei@novamens.com</email>
+        </developer>
+    </developers>
+
+  	<dependencies>
+
+
+
+
+	<!--  Client Java SDK
+		=============================================================================  -->
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpasyncclient</artifactId>
+			<version> ${httpasyncclient-version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-logging</artifactId>
+					<groupId>commons-logging</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>com.squareup.okhttp3</groupId>
+			<artifactId>okhttp</artifactId>
+			<version>${okhttp.version}</version>
+		</dependency>
+
+    <!-- DELLEMUSE MODEL  ===========================================================  -->
+
+		<dependency>
+			<groupId>dellemuse</groupId>
+			<artifactId>dellemuse-model</artifactId>			
+			<version>${dellemuse-model-version}</version>
+		</dependency>
+
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>
