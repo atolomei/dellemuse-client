@@ -1,21 +1,19 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>dellemuse</groupId>
-  <artifactId>client</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
+	<groupId>dellemuse</groupId>
+	<artifactId>client</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 
-  <name>dellemuse-client</name>
+	<name>dellemuse-client</name>
 
 	<description>
-
-
 	</description>
 
 	<url>https://kbee.io</url>
-
 
 	<licenses>
 		<license>
@@ -25,55 +23,45 @@
 		</license>
 	</licenses>
 
+	<properties>
 
-  <properties>
-	
+		<checksum-maven-plugin-version>1.11</checksum-maven-plugin-version>
 
+		<dellemuse-client-version>0.1-beta</dellemuse-client-version>
+		<dellemuse-model-version>0.1-beta</dellemuse-model-version>
+
+		<httpasyncclient-version>4.1.5</httpasyncclient-version>
+
+		<google.guava-version>33.4.8-jre</google.guava-version> 		<!--  05 /2025 -->
+		<google-http-client.version>1.44.2</google-http-client.version>
+
+		<java-version>17</java-version>
+
+		<junit-version>5.10.1</junit-version>
 		
-    <dellemuse-client-version>0.1-beta</dellemuse-client-version>
-  	<dellemuse-model-version>0.1-beta</dellemuse-model-version>    
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
+		<maven.compiler.release>11</maven.compiler.release>
 
+		<maven.test.skip>true</maven.test.skip>
 
-	<httpasyncclient-version>4.1.5</httpasyncclient-version>
-	<google-http-client.version>1.44.2</google-http-client.version>
+		<okhttp.version>4.12.0</okhttp.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-
-	<java-version>17</java-version>
-	
-	<junit-version>5.10.1</junit-version>
-
-
-
-
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
-    <maven.compiler.release>17</maven.compiler.release>
-
-	<maven.test.skip>true</maven.test.skip>
-
-	<okhttp.version>4.12.0</okhttp.version>
-			
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-
-    
-  </properties>
+	</properties>
 
 
 	<developers>
-        <developer>
-            <id>atolomei</id>
-            <name>Alejandro Tolomei</name>
-            <email>atolomei@novamens.com</email>
-        </developer>
-    </developers>
+		<developer>
+			<id>atolomei</id>
+			<name>Alejandro Tolomei</name>
+			<email>atolomei@novamens.com</email>
+		</developer>
+	</developers>
 
-  	<dependencies>
+	<dependencies>
 
-
-
-
-	<!--  Client Java SDK
+		<!--  Client Java SDK
 		=============================================================================  -->
 
 		<dependency>
@@ -94,20 +82,54 @@
 			<version>${okhttp.version}</version>
 		</dependency>
 
-    <!-- DELLEMUSE MODEL  ===========================================================  -->
+		<!-- DELLEMUSE MODEL ==================================================================  -->
 
 		<dependency>
 			<groupId>dellemuse</groupId>
-			<artifactId>dellemuse-model</artifactId>			
+			<artifactId>dellemuse-model</artifactId>
 			<version>${dellemuse-model-version}</version>
 		</dependency>
 
+		<!--  CHECKSUM =======================================================================  -->
 
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+		<dependency>
+			<groupId>net.nicoulaj.maven.plugins</groupId>
+			<artifactId>checksum-maven-plugin</artifactId>
+			<version>${checksum-maven-plugin-version}</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${google.guava-version}</version>
+		</dependency>
+
+		<!--  TEST
+		=====================================================================================  -->
+
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>${junit-version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-params</artifactId>
+			<version>${junit-version}</version>
+			<scope>test</scope>
+		</dependency>
+
+
+		<!--dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		< dependency-->
+		
+	</dependencies>
+
 </project>
