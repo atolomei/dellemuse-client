@@ -24,7 +24,11 @@ hs_err_pid*
 replay_pid*
 
 
-./client/tmp/
-./client/logs/
-./client/target/
+/tmp/
+
+
+/client/.settings/
+/client/tmp/
+/client/logs/
+/client/target/
 

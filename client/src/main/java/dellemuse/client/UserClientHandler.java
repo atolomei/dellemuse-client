@@ -28,9 +28,6 @@ public class UserClientHandler extends BaseClientHandler<UserModel> {
     public TypeReference<List<UserModel>> getTypeReference() {
         return new TypeReference<List<UserModel>>() {};
     }
-
-    
-    
 }
 
 

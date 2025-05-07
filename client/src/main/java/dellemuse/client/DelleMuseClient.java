@@ -42,6 +42,7 @@ import dellemuse.model.ArtExhibitionGuideModel;
 import dellemuse.model.ArtExhibitionItemModel;
 import dellemuse.model.ArtExhibitionModel;
 import dellemuse.model.ArtWorkModel;
+import dellemuse.model.GuideContentModel;
 import dellemuse.model.InstitutionModel;
 import dellemuse.model.PersonModel;
 import dellemuse.model.SiteModel;
@@ -66,7 +67,11 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 
 
-
+/**
+ * 
+ * 
+ * 
+ */
 public class DelleMuseClient {
 
     private static final Logger logger = Logger.getLogger(DelleMuseClient.class.getName());
@@ -89,21 +94,18 @@ public class DelleMuseClient {
 
     private PersonClientHandler personClientHandler;
 
-    private InstitutionClientHandler institutionClientHandler;
-
 
     private ArtWorkClientHandler artWorkClientHandler;
     private ArtWorkArtistClientHandler artWorkArtistClientHandler;
     private ArtWorkTypeClientHandler artWorkTypeClientHandler;
+    private InstitutionClientHandler institutionClientHandler;
     private SiteClientHandler siteClientHandler;
 
     private ArtExhibitionClientHandler artExhibitionClientHandler;
     private ArtExhibitionGuideClientHandler artExhibitionGuideClientHandler;
     private ArtExhibitionItemClientHandler artExhibitionItemClientHandler;
     
-
     private UserClientHandler userClientHandler;
-    
     
     /**
      * 
@@ -202,55 +204,48 @@ public class DelleMuseClient {
             throw new DelleMuseClientException(HttpStatus.OK.value(), ErrorCode.INTERNAL_ERROR.getCode(),
                     ErrorCode.INTERNAL_ERROR.getMessage().replace("%1", getClass().getSimpleName() + " - " + e.getMessage()));
         }
-
         
         return str;
-        
     }
     
-    
-    
     /** Person */
-    public PersonModel getPerson(Long id)                   throws DelleMuseClientException  { return getPersonClientHandler().get(id); }
-    public List<PersonModel>   listPersons()                 throws DelleMuseClientException  { return getPersonClientHandler().findAll(); }
+    public PersonModel          getPerson(Long id)              throws DelleMuseClientException  { return getPersonClientHandler().get(id);   }
+    public List<PersonModel>    listPersons()                   throws DelleMuseClientException  { return getPersonClientHandler().findAll(); }
     
     /** ArtWork */
-    public ArtWorkModel getArtWork(Long id)                 throws DelleMuseClientException  { return getArtWorkClientHandler().get(id); }
-    public List<ArtWorkModel> listArtWorks()                 throws DelleMuseClientException  {return getArtWorkClientHandler().findAll();}
+    public ArtWorkModel         getArtWork(Long id)             throws DelleMuseClientException  { return getArtWorkClientHandler().get(id); }
+    public List<ArtWorkModel>   listArtWorks()                  throws DelleMuseClientException  {return getArtWorkClientHandler().findAll();}
     
     /** Institution */
-    public InstitutionModel         getInstitution(Long id) throws DelleMuseClientException  { return getInstitutionClientHandler().get(id); }
-    public List<InstitutionModel>   listInstitutions()       throws DelleMuseClientException  { return getInstitutionClientHandler().findAll();  }
+    public InstitutionModel         getInstitution(Long id)     throws DelleMuseClientException  { return getInstitutionClientHandler().get(id);    }
+    public List<InstitutionModel>   listInstitutions()          throws DelleMuseClientException  { return getInstitutionClientHandler().findAll();  }
 
     /** Site */
-    public SiteModel         getSite(Long id)                           throws DelleMuseClientException  { return getSiteClientHandler().get(id); }
-    public List<SiteModel>   listSites()                                 throws DelleMuseClientException  { return getSiteClientHandler().findAll();}
-    public List<SiteModel>   listSite(InstitutionModel institution)     throws DelleMuseClientException  { return getSiteClientHandler().findSites(institution);}
+    public SiteModel                        getSite(Long id)                                               throws DelleMuseClientException  { return getSiteClientHandler().get(id);                }
+    public SiteModel                        getSiteNyShortName(String name)                                 throws DelleMuseClientException { return getSiteClientHandler().getByShortName(name);   }
     
-    
+    public List<SiteModel>                  listSites()                                                    throws DelleMuseClientException  { return getSiteClientHandler().findAll();                              }
+    public List<SiteModel>                  listSitesByInstitution(InstitutionModel institution)           throws DelleMuseClientException  { return getSiteClientHandler().listSitesByInstitution(institution);    }
+    public List<ArtExhibitionModel>         listArtExhibitionsBySite(SiteModel site)                       throws DelleMuseClientException  { return getSiteClientHandler().listArtExhibitionsBySite(site);         }
+            
     /** ArtExhibition */
-    public ArtExhibitionModel         getArtExhibition(Long id)  throws DelleMuseClientException  { return getArtExhibitionClientHandler().get(id); }
-    public List<ArtExhibitionModel>   listArtExhibitions()        throws DelleMuseClientException  { return getArtExhibitionClientHandler().findAll();}
+    public ArtExhibitionModel               getArtExhibition(Long id)  throws DelleMuseClientException   {return getArtExhibitionClientHandler().get(id);   }
+    public List<ArtExhibitionModel>         listArtExhibitions()       throws DelleMuseClientException  {return getArtExhibitionClientHandler().findAll();  }
 
-
-    /** ArtExhibitionGuide (Site) */
-    public ArtExhibitionGuideModel         getArtExhibitionGuide(Long id)  throws DelleMuseClientException  { return getArtExhibitionGuideClientHandler().get(id); }
-    public List<ArtExhibitionGuideModel>   listArtExhibitionGuides()        throws DelleMuseClientException  { return getArtExhibitionGuideClientHandler().findAll();}
+    /** ArtExhibitionGuide */
+    public ArtExhibitionGuideModel         getArtExhibitionGuide(Long id)       throws DelleMuseClientException                             {return getArtExhibitionGuideClientHandler().get(id);   }
+    public List<ArtExhibitionGuideModel>   listArtExhibitionGuides()            throws DelleMuseClientException                             {return getArtExhibitionGuideClientHandler().findAll(); }
+    public List<GuideContentModel>         listArtExhibitionGuideContents(ArtExhibitionGuideModel guide)  throws DelleMuseClientException   {return getArtExhibitionGuideClientHandler().listGuideContentsByArtExhibition(guide);}
     
     /** List<ArtExhibitionItem> (Site) */
-    public ArtExhibitionItemModel         getArtExhibitionItem(Long id)      throws DelleMuseClientException  {return getArtExhibitionItemClientHandler().get(id);   }
-    public List<ArtExhibitionItemModel>   listArtExhibitionItems()            throws DelleMuseClientException  {return getArtExhibitionItemClientHandler().findAll(); }
-
+    public ArtExhibitionItemModel         getArtExhibitionItem(Long id)         throws DelleMuseClientException  {return getArtExhibitionItemClientHandler().get(id);   }
+    public List<ArtExhibitionItemModel>   listArtExhibitionItems()              throws DelleMuseClientException  {return getArtExhibitionItemClientHandler().findAll(); }
 
     /** User */
-    public UserModel           getUser(Long id)     throws DelleMuseClientException   {return getUserClientHandler().get(id);   }
-    public List<UserModel>    listUsers()            throws DelleMuseClientException  {return getUserClientHandler().findAll(); }
+    public UserModel           getUser(Long id)                                 throws DelleMuseClientException   {return getUserClientHandler().get(id);               }
+    public List<UserModel>    listUsers()                                       throws DelleMuseClientException  {return getUserClientHandler().findAll();              }
 
-    
-    
-    
     /**
-     * 
      * 
      */
     protected void initHandlers() {
@@ -259,7 +254,7 @@ public class DelleMuseClient {
 
         this.artWorkClientHandler       = new ArtWorkClientHandler ( this );
         this.artWorkArtistClientHandler = new ArtWorkArtistClientHandler ( this );
-        this.artWorkTypeClientHandler  = new ArtWorkTypeClientHandler ( this );
+        this.artWorkTypeClientHandler   = new ArtWorkTypeClientHandler ( this );
         
         this.institutionClientHandler = new InstitutionClientHandler ( this );
         this.siteClientHandler = new  SiteClientHandler( this );
@@ -269,8 +264,8 @@ public class DelleMuseClient {
         this.artExhibitionClientHandler = new ArtExhibitionClientHandler( this ) ;
         this.artExhibitionGuideClientHandler = new ArtExhibitionGuideClientHandler( this );
         this.artExhibitionItemClientHandler =new ArtExhibitionItemClientHandler( this );
+        
     }
-    
     
     /**
      * <p>
@@ -313,8 +308,6 @@ public class DelleMuseClient {
     }
 
     
-    
-
     public void close() throws IOException {
         if (this.getHttpClient() != null) {
             if (this.getHttpClient().cache() != null)
@@ -774,66 +767,44 @@ public class DelleMuseClient {
         return userAgent;
     }
 
-    protected InstitutionClientHandler getInstitutionClientHandler() {
-        return institutionClientHandler;
-    }
-
-    protected SiteClientHandler getSiteClientHandler() {
-        return this.siteClientHandler;
-    }
+    public InstitutionClientHandler         getInstitutionClientHandler()           {return institutionClientHandler;           }   
+    public SiteClientHandler                getSiteClientHandler()                  {return siteClientHandler;                  }
+    public ArtWorkArtistClientHandler       getArtWorkArtistClientHandler()         {return artWorkArtistClientHandler;         }
+    public ArtWorkTypeClientHandler         getArtWorkTypeClientHandler()           {return artWorkTypeClientHandler;           }
+    public ArtExhibitionClientHandler       getArtExhibitionClientHandler()         {return artExhibitionClientHandler;         }
+    public UserClientHandler                getUserClientHandler()                  {return userClientHandler;                  }
+    public ArtExhibitionItemClientHandler   getArtExhibitionItemClientHandler()     {return artExhibitionItemClientHandler;     }
+    public ArtExhibitionGuideClientHandler  getArtExhibitionGuideClientHandler()    {return artExhibitionGuideClientHandler;    }
     
-    protected void setInstitutionClientHandler(InstitutionClientHandler institutionClientHandler) {
-        this.institutionClientHandler = institutionClientHandler;
-    }
-    
-    protected ArtWorkArtistClientHandler getArtWorkArtistClientHandler() {
-        return artWorkArtistClientHandler;
-    }
-
-    protected void setArtWorkArtistClientHandler(ArtWorkArtistClientHandler artWorkArtistClientHandler) {
-        this.artWorkArtistClientHandler = artWorkArtistClientHandler;
-    }
-
-    public ArtWorkTypeClientHandler getArtWorkTypeClientHandler() {
-        return artWorkTypeClientHandler;
-    }
 
     public void setArtWorkTypeClientHandler(ArtWorkTypeClientHandler artWorkTypeClientHandler) {
         this.artWorkTypeClientHandler = artWorkTypeClientHandler;
-    }
-
-    public ArtExhibitionClientHandler getArtExhibitionClientHandler() {
-        return artExhibitionClientHandler;
     }
 
     public void setArtExhibitionClientHandler(ArtExhibitionClientHandler artExhibitionClientHandler) {
         this.artExhibitionClientHandler = artExhibitionClientHandler;
     }
 
-    public ArtExhibitionItemClientHandler getArtExhibitionItemClientHandler() {
-        return artExhibitionItemClientHandler;
-    }
-
     public void setArtExhibitionItemClientHandler(ArtExhibitionItemClientHandler artExhibitionItemClientHandler) {
         this.artExhibitionItemClientHandler = artExhibitionItemClientHandler;
-    }
-
-    public ArtExhibitionGuideClientHandler getArtExhibitionGuideClientHandler() {
-        return artExhibitionGuideClientHandler;
     }
 
     public void setArtExhibitionGuideClientHandler(ArtExhibitionGuideClientHandler artExhibitionGuideClientHandler) {
         this.artExhibitionGuideClientHandler = artExhibitionGuideClientHandler;
     }
 
-    public UserClientHandler getUserClientHandler() {
-        return userClientHandler;
-    }
-
     public void setUserClientHandler(UserClientHandler userClientHandler) {
         this.userClientHandler = userClientHandler;
     }
+
+    protected void setInstitutionClientHandler(InstitutionClientHandler institutionClientHandler) {
+        this.institutionClientHandler = institutionClientHandler;
+    }
     
+    protected void setArtWorkArtistClientHandler(ArtWorkArtistClientHandler artWorkArtistClientHandler) {
+        this.artWorkArtistClientHandler = artWorkArtistClientHandler;
+    }
+
     private String getCacheWorkDir() {
         return getHomeDirAbsolutePath() + File.separator + "tmp" + File.separator + rand.randomString(6);
     }
@@ -843,6 +814,5 @@ public class DelleMuseClient {
             return ClientConstant.linux_home;
         return ClientConstant.windows_home;
     }
-
 
 }
