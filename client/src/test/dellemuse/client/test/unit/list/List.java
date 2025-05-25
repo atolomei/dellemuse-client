@@ -35,15 +35,19 @@ public class List extends BaseTest {
          listPersons();
          listUsers();
          
+         
          listInstitutions();
          listSites();
-         listSiteContents();
-         
+         listSitePlan();
          listArtExhibitions();
+         
+         
          listArtExhibitionGuides();
          listArtExhibitionGuideContents();
 
-         listSitePlan();
+         
+         
+         listSiteContents();
          
          showResults();
          
