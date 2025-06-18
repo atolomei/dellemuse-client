@@ -34,9 +34,6 @@ public class SiteClientHandler extends BaseClientHandler<SiteModel> {
     }
 
     
-    public TypeReference<List<SiteModel>> getTypeReference() {
-        return new TypeReference<List<SiteModel>>() {};
-    }
 
     public SiteModel getByShortName(String name) throws  DelleMuseClientException {
 
@@ -221,6 +218,10 @@ public class SiteClientHandler extends BaseClientHandler<SiteModel> {
                     ErrorCode.INTERNAL_ERROR.getMessage().replace("%1", "error parsing server response" + " | "
                     + e.getClass().getSimpleName() + " - " + e.getMessage() + "| institution:" + institution.getId().toString()));
         }
+    }
+
+    public TypeReference<List<SiteModel>> getTypeReference() {
+        return new TypeReference<List<SiteModel>>() {};
     }
 
     

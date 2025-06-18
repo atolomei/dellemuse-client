@@ -2,6 +2,7 @@ package dellemuse.client;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.net.ConnectException;
 import java.security.KeyManagementException;
@@ -54,6 +55,7 @@ import dellemuse.model.logging.Logger;
 import dellemuse.model.util.Check;
 import dellemuse.model.util.Constant;
 import dellemuse.model.util.RandomIDGenerator;
+import dellemuse.model.util.ThumbnailSize;
 import okhttp3.Cache;
 import okhttp3.HttpUrl;
 import okhttp3.MultipartBody;
@@ -65,7 +67,6 @@ import okhttp3.Response;
 
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
-
 
 /**
  * 
@@ -94,7 +95,6 @@ public class DelleMuseClient {
 
     private PersonClientHandler personClientHandler;
 
-
     private ArtWorkClientHandler artWorkClientHandler;
     private ArtWorkArtistClientHandler artWorkArtistClientHandler;
     private ArtWorkTypeClientHandler artWorkTypeClientHandler;
@@ -104,6 +104,9 @@ public class DelleMuseClient {
     private ArtExhibitionClientHandler artExhibitionClientHandler;
     private ArtExhibitionGuideClientHandler artExhibitionGuideClientHandler;
     private ArtExhibitionItemClientHandler artExhibitionItemClientHandler;
+    
+    private GuideContentClientHandler guideContentClientHandler;
+    
     
     private UserClientHandler userClientHandler;
     
@@ -188,6 +191,85 @@ public class DelleMuseClient {
         initHandlers();
     }
 
+    public String getPresignedUrl(Long id) throws DelleMuseClientException {
+        Check.requireNonNullArgument(id, "id is null");
+        String endPoint [] = Endpoint.getEndPointResourcePresignedUrl();
+        String path[] = new String[endPoint.length];
+        for (int n=0; n<path.length-1; n++)
+            path[n]=endPoint[n];
+        path[path.length-1]=id.toString();
+
+        String str = null;
+        
+        try (Response response = executeGetReq(path)) {
+            str = response.body().string();
+        } catch (IOException e) {
+            logger.debug(e);
+            throw new DelleMuseClientException(HttpStatus.OK.value(), ErrorCode.INTERNAL_ERROR.getCode(),
+                    ErrorCode.INTERNAL_ERROR.getMessage().replace("%1", getClass().getSimpleName() + " - " + e.getMessage()));
+        }
+        return str;
+        
+    }
+    
+    
+    public String getPresignedThumbnailUrl(Long id, ThumbnailSize thumbnailSize) throws DelleMuseClientException {
+        Check.requireNonNullArgument(id, "id is null");
+        Check.requireNonNullArgument(thumbnailSize, "thumbnailSize is null");
+        String endPoint [] = Endpoint.getEndPointResourceThumbnailPresignedUrl();
+        String path[] = new String[endPoint.length];
+        for (int n=0; n<path.length-1; n++)
+            path[n]=endPoint[n];
+        
+        
+        path[path.length-2]=thumbnailSize.getLabel();
+        path[path.length-1]=id.toString();
+
+        String str = null;
+        
+        try (Response response = executeGetReq(path)) {
+            str = response.body().string();
+        } catch (IOException e) {
+            logger.debug(e);
+            throw new DelleMuseClientException(HttpStatus.OK.value(), ErrorCode.INTERNAL_ERROR.getCode(),
+                    ErrorCode.INTERNAL_ERROR.getMessage().replace("%1", getClass().getSimpleName() + " - " + e.getMessage()));
+        }
+        
+        return str;
+        
+    }
+    
+    
+    public InputStream getResourceStream(String bucketName, String objectName) throws DelleMuseClientException {
+        Check.requireNonNullStringArgument(bucketName, "bucketName is null or empty");
+        Check.requireNonNullStringArgument(objectName, "objectName can not be null or empty | b:" + bucketName);
+        
+        String endPoint [] = Endpoint.getEndPointResourceByBucketObject();
+        String path[] = new String[endPoint.length];
+        for (int n=0; n<path.length-1; n++)
+            path[n]=endPoint[n];
+        path[path.length-2]= bucketName;
+        path[path.length-1]=objectName;
+
+        Response httpResponse = executeGetReq(path);
+        return httpResponse.body().byteStream();
+    }
+    
+
+    public InputStream getResourceStreamById(Long id) throws DelleMuseClientException {
+        Check.requireNonNullArgument(id, "id is null");
+        String endPoint [] = Endpoint.getEndPointResourceById();
+        String path[] = new String[endPoint.length];
+        for (int n=0; n<path.length-1; n++)
+            path[n]=endPoint[n];
+        path[path.length-1]=id.toString();
+        Response httpResponse = executeGetReq(path);
+        return httpResponse.body().byteStream();
+    }
+
+    
+
+    
     /** Ping */
     public String ping() throws DelleMuseClientException {
         
@@ -221,16 +303,16 @@ public class DelleMuseClient {
     public List<InstitutionModel>   listInstitutions()          throws DelleMuseClientException  { return getInstitutionClientHandler().findAll();  }
 
     /** Site */
-    public SiteModel                        getSite(Long id)                                               throws DelleMuseClientException  { return getSiteClientHandler().get(id);                }
+    public SiteModel                        getSite(Long id)                                                throws DelleMuseClientException { return getSiteClientHandler().get(id);                }
     public SiteModel                        getSiteNyShortName(String name)                                 throws DelleMuseClientException { return getSiteClientHandler().getByShortName(name);   }
     
-    public List<SiteModel>                  listSites()                                                    throws DelleMuseClientException  { return getSiteClientHandler().findAll();                              }
-    public List<SiteModel>                  listSitesByInstitution(InstitutionModel institution)           throws DelleMuseClientException  { return getSiteClientHandler().listSitesByInstitution(institution);    }
-    public List<ArtExhibitionModel>         listArtExhibitionsBySite(SiteModel site)                       throws DelleMuseClientException  { return getSiteClientHandler().listArtExhibitionsBySite(site);         }
+    public List<SiteModel>                  listSites()                                                     throws DelleMuseClientException  { return getSiteClientHandler().findAll();                              }
+    public List<SiteModel>                  listSitesByInstitution(InstitutionModel institution)            throws DelleMuseClientException  { return getSiteClientHandler().listSitesByInstitution(institution);    }
+    public List<ArtExhibitionModel>         listArtExhibitionsBySite(SiteModel site)                        throws DelleMuseClientException  { return getSiteClientHandler().listArtExhibitionsBySite(site);         }
             
     /** ArtExhibition */
-    public ArtExhibitionModel               getArtExhibition(Long id)  throws DelleMuseClientException   {return getArtExhibitionClientHandler().get(id);   }
-    public List<ArtExhibitionModel>         listArtExhibitions()       throws DelleMuseClientException  {return getArtExhibitionClientHandler().findAll();  }
+    public ArtExhibitionModel               getArtExhibition(Long id)                                       throws DelleMuseClientException  {return getArtExhibitionClientHandler().get(id);   }
+    public List<ArtExhibitionModel>         listArtExhibitions()                                            throws DelleMuseClientException  {return getArtExhibitionClientHandler().findAll();  }
 
     /** ArtExhibitionGuide */
     public ArtExhibitionGuideModel         getArtExhibitionGuide(Long id)       throws DelleMuseClientException                             {return getArtExhibitionGuideClientHandler().get(id);   }
@@ -242,8 +324,8 @@ public class DelleMuseClient {
     public List<ArtExhibitionItemModel>   listArtExhibitionItems()              throws DelleMuseClientException  {return getArtExhibitionItemClientHandler().findAll(); }
 
     /** User */
-    public UserModel           getUser(Long id)                                 throws DelleMuseClientException   {return getUserClientHandler().get(id);               }
-    public List<UserModel>    listUsers()                                       throws DelleMuseClientException  {return getUserClientHandler().findAll();              }
+    public UserModel           getUser(Long id)                                 throws DelleMuseClientException     {return getUserClientHandler().get(id);               }
+    public List<UserModel>    listUsers()                                       throws DelleMuseClientException     {return getUserClientHandler().findAll();             }
 
     /**
      * 
@@ -264,6 +346,9 @@ public class DelleMuseClient {
         this.artExhibitionClientHandler = new ArtExhibitionClientHandler( this ) ;
         this.artExhibitionGuideClientHandler = new ArtExhibitionGuideClientHandler( this );
         this.artExhibitionItemClientHandler =new ArtExhibitionItemClientHandler( this );
+        
+        
+        this.guideContentClientHandler = new GuideContentClientHandler( this );
         
     }
     
@@ -370,7 +455,7 @@ public class DelleMuseClient {
         return String.format("%64s", new BigInteger(1,  hash).toString(16)).replace(' ', '0');
     }
     
-    private HttpUrl getHttpUrl() {
+    public HttpUrl getHttpUrl() {
         return httpUrl;
     }
     
@@ -775,6 +860,10 @@ public class DelleMuseClient {
     public UserClientHandler                getUserClientHandler()                  {return userClientHandler;                  }
     public ArtExhibitionItemClientHandler   getArtExhibitionItemClientHandler()     {return artExhibitionItemClientHandler;     }
     public ArtExhibitionGuideClientHandler  getArtExhibitionGuideClientHandler()    {return artExhibitionGuideClientHandler;    }
+    public GuideContentClientHandler        getGuideContentClientHandler()          {return guideContentClientHandler;          }
+    
+    
+    
     
 
     public void setArtWorkTypeClientHandler(ArtWorkTypeClientHandler artWorkTypeClientHandler) {
@@ -814,5 +903,7 @@ public class DelleMuseClient {
             return ClientConstant.linux_home;
         return ClientConstant.windows_home;
     }
+
+
 
 }

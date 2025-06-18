@@ -30,7 +30,12 @@ public abstract class BaseClientHandler<T extends DelleMuseModelObject> implemen
         this.clientClass=clientClass;
     }
     
-
+    /**
+     * 
+     * 
+     * 
+     * 
+     */
     @SuppressWarnings("unchecked")    
     public T update(T item) throws DelleMuseClientException {
         
@@ -79,6 +84,12 @@ public abstract class BaseClientHandler<T extends DelleMuseModelObject> implemen
         
     }
     
+    /**
+     * 
+     * 
+     * 
+     * 
+     */
     @SuppressWarnings("unchecked")
     public T get(Long id) throws DelleMuseClientException {
 
@@ -147,6 +158,12 @@ public abstract class BaseClientHandler<T extends DelleMuseModelObject> implemen
     }
 
     
+    /**
+     * 
+     * 
+     * 
+     * 
+     */
     @SuppressWarnings("unchecked")
     public T findByName(String name) throws DelleMuseClientException {
         
@@ -182,7 +199,12 @@ public abstract class BaseClientHandler<T extends DelleMuseModelObject> implemen
     }
     
     
-    
+    /**
+     * 
+     * 
+     * 
+     * 
+     */
     public List<T> findAll() throws DelleMuseClientException  { 
         
         String str = null;
@@ -212,6 +234,12 @@ public abstract class BaseClientHandler<T extends DelleMuseModelObject> implemen
     }
 
     
+    /**
+     * 
+     * 
+     * 
+     * 
+     */
     public void delete(Long id) throws DelleMuseClientException {
         Check.requireNonNullArgument(id, "id is null");
         String endPoint [] = Endpoint.getEndPointDelete(getClientClass());
@@ -226,6 +254,12 @@ public abstract class BaseClientHandler<T extends DelleMuseModelObject> implemen
     }
     
 
+    /**
+     * 
+     * 
+     * 
+     * 
+     */
     @SuppressWarnings("unchecked")
     public T create(String name)  throws DelleMuseClientException {
         
@@ -273,13 +307,23 @@ public abstract class BaseClientHandler<T extends DelleMuseModelObject> implemen
     }
 
     
-    
+    /**
+     * 
+     * 
+     * 
+     * 
+     */
     public Class<?> getClientClass() {
         return clientClass;
     }
     
     
-    
+    /**
+     * 
+     * 
+     * 
+     * 
+     */
     public abstract TypeReference<List<T>> getTypeReference();
     
     public DelleMuseClient getClient() {

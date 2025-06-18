@@ -60,6 +60,31 @@ public class Endpoint {
         return API_ROOMS_BY_FLOOR_GET;
     }
 
+
+    public static final String API_RESOURCE_STREAM_BYID_GET[]    = { "resource", "getstreambyid","{id}"    };
+    public static String[] getEndPointResourceById() {
+        return API_RESOURCE_STREAM_BYID_GET;
+    }
+    
+    public static final String API_RESOURCE_STREAM_BYBO_GET[]    = { "resource", "getstream","{bucketname}", "{objectname}"    };
+    public static String[] getEndPointResourceByBucketObject() {
+        return API_RESOURCE_STREAM_BYBO_GET;
+    }
+
+    
+    public static final String API_RESOURCE_PRESIGNED_GET[]    = { "resource", "getpresigned","{id}"  };
+    public static String[] getEndPointResourcePresignedUrl() {
+        return API_RESOURCE_PRESIGNED_GET;
+    }
+                                                        
+
+    public static final String API_RESOURCE_THUMBNAIL_PRESIGNED_GET[]    = { "resource", "getpresignedthumbnail","{size}", "{id}"  };
+    public static String[] getEndPointResourceThumbnailPresignedUrl() {
+        return API_RESOURCE_THUMBNAIL_PRESIGNED_GET;
+    }
+
+    
+    
     /**
      *  ArtExhibitionGuideContents
      */
@@ -117,6 +142,7 @@ public class Endpoint {
         path[path.length-1]=value;
         return path;
     }
+
 
 
 
