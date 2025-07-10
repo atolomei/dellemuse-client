@@ -87,8 +87,6 @@ public abstract class BaseClientHandler<T extends DelleMuseModelObject> implemen
     /**
      * 
      * 
-     * 
-     * 
      */
     @SuppressWarnings("unchecked")
     public T get(Long id) throws DelleMuseClientException {
