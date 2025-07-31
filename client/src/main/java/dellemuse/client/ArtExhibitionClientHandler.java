@@ -30,6 +30,14 @@ public class ArtExhibitionClientHandler extends BaseClientHandler<ArtExhibitionM
         return new TypeReference<List<ArtExhibitionModel>>() {};
     }
 
+    /**
+     * 
+     * 
+     * 
+     * @param artExhibition
+     * @return
+     * @throws DelleMuseClientException
+     */
     public List<ArtExhibitionGuideModel> listArtExhibitionGuides(ArtExhibitionModel artExhibition) throws DelleMuseClientException {
         
         Check.requireNonNullArgument(artExhibition, "artExhibition is null");

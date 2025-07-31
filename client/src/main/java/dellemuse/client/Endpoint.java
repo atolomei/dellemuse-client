@@ -11,8 +11,7 @@ import dellemuse.model.PersonModel;
 
 public class Endpoint {
 
-    // public static final String ROOT                      = "dellemuse";
-
+ 
     public static final String API_PING[]                   = { "ping"                                      };
     public static final String API_METRICS[]                = { "metrics"                                   };
     public static final String API_SYSTEM_INFO[]            = { "systeminfo"                                };
@@ -25,9 +24,18 @@ public class Endpoint {
     
     
     public static final String API_ARTEXHIBITIONS_BY_SITE_GET[]    = { "site", "artexhibitions", "{siteid}"    };
-    public static String[] getEndPointArtExhibitionsBySite() {return API_ARTEXHIBITIONS_BY_SITE_GET;}
+    public static String[] getEndPointArtExhibitionsBySite() 	{return API_ARTEXHIBITIONS_BY_SITE_GET;}
+
+    public static final String API_GUIDECONTENTS_BY_SITE_GET[]    = { "site", "guidecontents", "{siteid}"    };
+    public static String[] getEndPointGuideContentsBySite() 	{return  API_GUIDECONTENTS_BY_SITE_GET; }
     
+    public static final String API_ARTEXHIBITIONITEMS_BY_SITE_GET[]    = { "site", "artexhibitionitems", "{siteid}"    };
+    public static String[] getEndPointArtExhibitionItemsBySite() 	{return  API_ARTEXHIBITIONITEMS_BY_SITE_GET; }
+    
+    public static final String API_ARTWORKS_BY_SITE_GET[]    = { "site", "artworks", "{siteid}"    };
+    public static String[] getEndPointArtworksBySite() 			{return  API_ARTWORKS_BY_SITE_GET; }
                                 
+    
     public static final String API_SITE_BY_SHORTNAME_GET[]    = { "site", "shortname", "{shortname}"    };
     
     public static String[] getEndPointSitebyShortName() {
@@ -44,6 +52,7 @@ public class Endpoint {
     
 
     public static final String API_ARTEXHIBITIONGUIDES_BY_ARTEXHIBITION_GET[]    = { "artexhibition", "artexhibitionguides", "{artexhibitionid}"    };
+
     public static String[] getEndPointArtExhibitionGuidesByArtExhibition() {
         return API_ARTEXHIBITIONGUIDES_BY_ARTEXHIBITION_GET;
     }
@@ -142,7 +151,7 @@ public class Endpoint {
         path[path.length-1]=value;
         return path;
     }
-
+ 
 
 
 

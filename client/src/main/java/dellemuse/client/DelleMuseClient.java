@@ -221,7 +221,6 @@ public class DelleMuseClient {
         for (int n=0; n<path.length-1; n++)
             path[n]=endPoint[n];
         
-        
         path[path.length-2]=thumbnailSize.getLabel();
         path[path.length-1]=id.toString();
 
@@ -291,43 +290,50 @@ public class DelleMuseClient {
     }
     
     /** Person */
-    public PersonModel          getPerson(Long id)              throws DelleMuseClientException  { return getPersonClientHandler().get(id);   }
-    public List<PersonModel>    listPersons()                   throws DelleMuseClientException  { return getPersonClientHandler().findAll(); }
+    public PersonModel          	getPerson(Long id)              throws DelleMuseClientException  { return getPersonClientHandler().get(id);   }
+    public List<PersonModel>    	listPersons()                   throws DelleMuseClientException  { return getPersonClientHandler().findAll(); }
     
     /** ArtWork */
-    public ArtWorkModel         getArtWork(Long id)             throws DelleMuseClientException  { return getArtWorkClientHandler().get(id); }
-    public List<ArtWorkModel>   listArtWorks()                  throws DelleMuseClientException  {return getArtWorkClientHandler().findAll();}
+    public ArtWorkModel         	getArtWork(Long id)             throws DelleMuseClientException  { return getArtWorkClientHandler().get(id); }
+    public List<ArtWorkModel>   	listArtWorks()                  throws DelleMuseClientException  {return getArtWorkClientHandler().findAll();}
     
     /** Institution */
-    public InstitutionModel         getInstitution(Long id)     throws DelleMuseClientException  { return getInstitutionClientHandler().get(id);    }
-    public List<InstitutionModel>   listInstitutions()          throws DelleMuseClientException  { return getInstitutionClientHandler().findAll();  }
+    public InstitutionModel         getInstitution(Long id)     	throws DelleMuseClientException  { return getInstitutionClientHandler().get(id);    }
+    public List<InstitutionModel>   listInstitutions()          	throws DelleMuseClientException  { return getInstitutionClientHandler().findAll();  }
 
     /** Site */
-    public SiteModel                        getSite(Long id)                                                throws DelleMuseClientException { return getSiteClientHandler().get(id);                }
-    public SiteModel                        getSiteNyShortName(String name)                                 throws DelleMuseClientException { return getSiteClientHandler().getByShortName(name);   }
+    public SiteModel                        getSite(Long id)                                                throws DelleMuseClientException  { return getSiteClientHandler().get(id);                }
+    public SiteModel                        getSiteByShortName(String name)                                 throws DelleMuseClientException  { return getSiteClientHandler().getByShortName(name);   }
     
     public List<SiteModel>                  listSites()                                                     throws DelleMuseClientException  { return getSiteClientHandler().findAll();                              }
     public List<SiteModel>                  listSitesByInstitution(InstitutionModel institution)            throws DelleMuseClientException  { return getSiteClientHandler().listSitesByInstitution(institution);    }
     public List<ArtExhibitionModel>         listArtExhibitionsBySite(SiteModel site)                        throws DelleMuseClientException  { return getSiteClientHandler().listArtExhibitionsBySite(site);         }
-            
+    
+    public List<ArtExhibitionItemModel> 	listArtExhibitionItemBySite(SiteModel site) 					throws DelleMuseClientException  { return getSiteClientHandler().listArtExhibitionItemsBySite(site);     }
+    public List<GuideContentModel>         	listSiteGuideContents(SiteModel site) 							throws DelleMuseClientException  { return getSiteClientHandler().listGuideContentsBySite(site);          }
+    public List<ArtWorkModel>   			listSiteArtWorks( SiteModel site)				                throws DelleMuseClientException  { return getSiteClientHandler().listArtWorksBySite(site);               }
+    
     /** ArtExhibition */
-    public ArtExhibitionModel               getArtExhibition(Long id)                                       throws DelleMuseClientException  {return getArtExhibitionClientHandler().get(id);   }
-    public List<ArtExhibitionModel>         listArtExhibitions()                                            throws DelleMuseClientException  {return getArtExhibitionClientHandler().findAll();  }
+    public ArtExhibitionModel               getArtExhibition(Long id)                                       throws DelleMuseClientException  {return getArtExhibitionClientHandler().get(id);        }
+    public List<ArtExhibitionModel>         listArtExhibitions()                                            throws DelleMuseClientException  {return getArtExhibitionClientHandler().findAll();      }
 
     /** ArtExhibitionGuide */
-    public ArtExhibitionGuideModel         getArtExhibitionGuide(Long id)       throws DelleMuseClientException                             {return getArtExhibitionGuideClientHandler().get(id);   }
-    public List<ArtExhibitionGuideModel>   listArtExhibitionGuides()            throws DelleMuseClientException                             {return getArtExhibitionGuideClientHandler().findAll(); }
-    public List<GuideContentModel>         listArtExhibitionGuideContents(ArtExhibitionGuideModel guide)  throws DelleMuseClientException   {return getArtExhibitionGuideClientHandler().listGuideContentsByArtExhibition(guide);}
+    public ArtExhibitionGuideModel         getArtExhibitionGuide(Long id)       							throws DelleMuseClientException { return getArtExhibitionGuideClientHandler().get(id);   }
+    public List<ArtExhibitionGuideModel>   listArtExhibitionGuides()            							throws DelleMuseClientException { return getArtExhibitionGuideClientHandler().findAll(); }
+    public List<GuideContentModel>         listArtExhibitionGuideContents(ArtExhibitionGuideModel guide)  	throws DelleMuseClientException { return getArtExhibitionGuideClientHandler().listGuideContentsByArtExhibition(guide);}
+    public List<GuideContentModel>         listArtExhibitionGuideContents(Long guideId)					  	throws DelleMuseClientException { return getArtExhibitionGuideClientHandler().listGuideContentsByArtExhibition(guideId);}
+
     
     /** List<ArtExhibitionItem> (Site) */
-    public ArtExhibitionItemModel         getArtExhibitionItem(Long id)         throws DelleMuseClientException  {return getArtExhibitionItemClientHandler().get(id);   }
-    public List<ArtExhibitionItemModel>   listArtExhibitionItems()              throws DelleMuseClientException  {return getArtExhibitionItemClientHandler().findAll(); }
+    public ArtExhibitionItemModel         getArtExhibitionItem(Long id)         							throws DelleMuseClientException  { return getArtExhibitionItemClientHandler().get(id);    }
+    public List<ArtExhibitionItemModel>   listArtExhibitionItems()              							throws DelleMuseClientException  { return getArtExhibitionItemClientHandler().findAll();  }
 
     /** User */
-    public UserModel           getUser(Long id)                                 throws DelleMuseClientException     {return getUserClientHandler().get(id);               }
-    public List<UserModel>    listUsers()                                       throws DelleMuseClientException     {return getUserClientHandler().findAll();             }
+    public UserModel           getUser(Long id)                                 							throws DelleMuseClientException { return getUserClientHandler().get(id);                  }
+    public List<UserModel>    listUsers()                                       							throws DelleMuseClientException { return getUserClientHandler().findAll();                }
 
     /**
+     * 
      * 
      */
     protected void initHandlers() {
@@ -347,9 +353,7 @@ public class DelleMuseClient {
         this.artExhibitionGuideClientHandler = new ArtExhibitionGuideClientHandler( this );
         this.artExhibitionItemClientHandler =new ArtExhibitionItemClientHandler( this );
         
-        
         this.guideContentClientHandler = new GuideContentClientHandler( this );
-        
     }
     
     /**
@@ -861,9 +865,6 @@ public class DelleMuseClient {
     public ArtExhibitionItemClientHandler   getArtExhibitionItemClientHandler()     {return artExhibitionItemClientHandler;     }
     public ArtExhibitionGuideClientHandler  getArtExhibitionGuideClientHandler()    {return artExhibitionGuideClientHandler;    }
     public GuideContentClientHandler        getGuideContentClientHandler()          {return guideContentClientHandler;          }
-    
-    
-    
     
 
     public void setArtWorkTypeClientHandler(ArtWorkTypeClientHandler artWorkTypeClientHandler) {

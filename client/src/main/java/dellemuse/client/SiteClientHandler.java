@@ -11,7 +11,9 @@ import dellemuse.client.error.DelleMuseClientException;
 import dellemuse.model.ArtExhibitionGuideModel;
 import dellemuse.model.ArtExhibitionItemModel;
 import dellemuse.model.ArtExhibitionModel;
+import dellemuse.model.ArtWorkModel;
 import dellemuse.model.FloorModel;
+import dellemuse.model.GuideContentModel;
 import dellemuse.model.InstitutionModel;
 import dellemuse.model.RoomModel;
 import dellemuse.model.SiteModel;
@@ -35,6 +37,13 @@ public class SiteClientHandler extends BaseClientHandler<SiteModel> {
 
     
 
+    /**
+     * 
+     * 
+     * @param name
+     * @return
+     * @throws DelleMuseClientException
+     */
     public SiteModel getByShortName(String name) throws  DelleMuseClientException {
 
         Check.requireNonNullArgument(name, "name is null");
@@ -70,6 +79,12 @@ public class SiteClientHandler extends BaseClientHandler<SiteModel> {
         }
     }
     
+    /**
+     * 
+     * @param site
+     * @return
+     * @throws DelleMuseClientException
+     */
     
     public List<ArtExhibitionModel> listArtExhibitionsBySite(SiteModel site) throws DelleMuseClientException {
      
@@ -107,9 +122,96 @@ public class SiteClientHandler extends BaseClientHandler<SiteModel> {
         }
     }
 
+    
+/**
+ * 
+ * 
+ * @param site
+ * @return
+ * @throws DelleMuseClientException
+ */
+	public List<GuideContentModel> listGuideContentsBySite(SiteModel site)  throws  DelleMuseClientException {
+
+		   Check.requireNonNullArgument(site, "Site is null");
+	        String str = null;
+
+	        String endPoint [] = Endpoint.getEndPointGuideContentsBySite();
+
+	        String path[] = new String[endPoint.length];
+	        for (int n=0; n<path.length-1; n++)
+	            path[n]=endPoint[n];
+	        path[path.length-1]=site.getId().toString();
+	        
+	        
+	        try (Response response = getClient().executeGetReq(path)) {
+
+	            str = response.body().string();
+
+	        } catch (IOException e ) {
+	            logger.debug(e);
+	            throw new DelleMuseClientException(HttpStatus.OK.value(), ErrorCode.INTERNAL_ERROR.getCode(),
+	                    ErrorCode.INTERNAL_ERROR.getMessage().replace("%1", getClass().getSimpleName() + " - " + e.getMessage())
+	                    + "| site:" + site.getId().toString());
+	        } 
+	        
+	        try {
+	            
+	            return getClient().getObjectMapper().readValue(str, new TypeReference<List<GuideContentModel>>() {});
+
+	        } catch (JsonProcessingException e) {
+	            logger.debug(e);
+	            throw new DelleMuseClientException(HttpStatus.OK.value(), ErrorCode.INTERNAL_ERROR.getCode(),
+	                    ErrorCode.INTERNAL_ERROR.getMessage().replace("%1", "error parsing server response" + " | "
+	                    + e.getClass().getSimpleName() + " - " + e.getMessage() + "| site:" + site.getId().toString()));
+	        } 
+	}
 
     
     
+	/**
+	 * 
+	 * TODO AT
+	 * 
+	 * @param site
+	 * @return
+	 * @throws DelleMuseClientException
+	 */
+		public List<ArtExhibitionItemModel> listArtExhibitionItemsBySite(SiteModel site)  throws  DelleMuseClientException {
+
+			   Check.requireNonNullArgument(site, "Site is null");
+		        String str = null;
+
+		        String endPoint [] = Endpoint.getEndPointArtExhibitionItemsBySite();
+
+		        String path[] = new String[endPoint.length];
+		        for (int n=0; n<path.length-1; n++)
+		            path[n]=endPoint[n];
+		        path[path.length-1]=site.getId().toString();
+		        
+		        try (Response response = getClient().executeGetReq(path)) {
+
+		            str = response.body().string();
+
+		        } catch (IOException e ) {
+		            logger.debug(e);
+		            throw new DelleMuseClientException(HttpStatus.OK.value(), ErrorCode.INTERNAL_ERROR.getCode(),
+		                    ErrorCode.INTERNAL_ERROR.getMessage().replace("%1", getClass().getSimpleName() + " - " + e.getMessage())
+		                    + "| site:" + site.getId().toString());
+		        } 
+		        
+		        try {
+		            
+		            return getClient().getObjectMapper().readValue(str, new TypeReference<List<ArtExhibitionItemModel>>() {});
+
+		        } catch (JsonProcessingException e) {
+		            logger.debug(e);
+		            throw new DelleMuseClientException(HttpStatus.OK.value(), ErrorCode.INTERNAL_ERROR.getCode(),
+		                    ErrorCode.INTERNAL_ERROR.getMessage().replace("%1", "error parsing server response" + " | "
+		                    + e.getClass().getSimpleName() + " - " + e.getMessage() + "| site:" + site.getId().toString()));
+		        } 
+		}
+
+	
 
     
     public List<FloorModel> listFloorsBySite(SiteModel site) throws DelleMuseClientException {
@@ -224,6 +326,49 @@ public class SiteClientHandler extends BaseClientHandler<SiteModel> {
         return new TypeReference<List<SiteModel>>() {};
     }
 
+
+    /**
+     * 
+     * 
+     * 
+     * @param site
+     * @return
+     * @throws DelleMuseClientException
+     */
+
+	public List<ArtWorkModel> listArtWorksBySite(SiteModel site) throws DelleMuseClientException {
+
+		Check.requireNonNullArgument(site, "site is null");
+	        String str = null;
+
+	        String endPoint [] = Endpoint.getEndPointArtworksBySite();
+	        String path[] = new String[endPoint.length];
+	        int counter = 0;
+	        for (String s: endPoint)
+	            path[counter++]=s;
+	        path[endPoint.length-1]=site.getId().toString();
+	        
+	        try (Response response = getClient().executeGetReq(path)) {
+
+	            str = response.body().string();
+
+	        } catch (IOException e ) {
+	            logger.debug(e);
+	            throw new DelleMuseClientException(HttpStatus.OK.value(), ErrorCode.INTERNAL_ERROR.getCode(),
+	                    ErrorCode.INTERNAL_ERROR.getMessage().replace("%1", getClass().getSimpleName() + " - " + e.getMessage())
+	                    + "| site:" + site.getId().toString());
+	        } 
+	        
+	        try {
+	            return getClient().getObjectMapper().readValue(str, new TypeReference<List<ArtWorkModel>>() {} );
+
+	        } catch (JsonProcessingException e) {
+	            logger.debug(e);
+	            throw new DelleMuseClientException(HttpStatus.OK.value(), ErrorCode.INTERNAL_ERROR.getCode(),
+	                    ErrorCode.INTERNAL_ERROR.getMessage().replace("%1", "error parsing server response" + " | "
+	                    + e.getClass().getSimpleName() + " - " + e.getMessage() + "| institution:" + site.getId().toString()));
+	        }
+	}
     
 }
 

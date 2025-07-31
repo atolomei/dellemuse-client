@@ -32,7 +32,13 @@ public class ArtExhibitionGuideClientHandler extends BaseClientHandler<ArtExhibi
         return new TypeReference<List<ArtExhibitionGuideModel>>() {};
     }
  
-    
+    /**
+     * 
+     * 
+     * @param artExhibitionGuide
+     * @return
+     * @throws DelleMuseClientException
+     */
     public List<GuideContentModel> listGuideContentsByArtExhibition(ArtExhibitionGuideModel artExhibitionGuide) throws DelleMuseClientException {
         
         Check.requireNonNullArgument(artExhibitionGuide, "artExhibitionGuide is null");
@@ -63,4 +69,45 @@ public class ArtExhibitionGuideClientHandler extends BaseClientHandler<ArtExhibi
                     + e.getClass().getSimpleName() + " - " + e.getMessage() + "| artExhibitionGuide:" + artExhibitionGuide.getId().toString()));
         }
     }
+    
+    
+    /**
+     * 
+     * 
+     * @param artExhibitionGuide
+     * @return
+     * @throws DelleMuseClientException
+     */
+    public List<GuideContentModel> listGuideContentsByArtExhibition(Long artExhibitionGuideId) throws DelleMuseClientException {
+        
+        Check.requireNonNullArgument(artExhibitionGuideId, "artExhibitionGuideId is null");
+        
+        String path[] = Endpoint.getArtExhibitionGuideContens(artExhibitionGuideId.toString());
+        
+        String str = null;
+        
+        try (Response response = getClient().executeGetReq(path)) {
+
+            str = response.body().string();
+
+        } catch (IOException e ) {
+            logger.debug(e);
+            throw new DelleMuseClientException(HttpStatus.OK.value(), ErrorCode.INTERNAL_ERROR.getCode(),
+                    ErrorCode.INTERNAL_ERROR.getMessage().replace("%1", getClass().getSimpleName() + " - " + e.getMessage())
+                    + "| artExhibitionGuideId:" + artExhibitionGuideId.toString());
+        } 
+        
+        try {
+            
+            return getClient().getObjectMapper().readValue(str, new TypeReference<List<GuideContentModel>>() {});
+
+        } catch (JsonProcessingException e) {
+            logger.debug(e);
+            throw new DelleMuseClientException(HttpStatus.OK.value(), ErrorCode.INTERNAL_ERROR.getCode(),
+                    ErrorCode.INTERNAL_ERROR.getMessage().replace("%1", "error parsing server response" + " | "
+                    + e.getClass().getSimpleName() + " - " + e.getMessage() + "| artExhibitionGuideId:" + artExhibitionGuideId.toString()));
+        }
+    }
+    
+    
 }
