@@ -22,7 +22,7 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-
+ 
 	<properties>
 
 		<checksum-maven-plugin-version>1.11</checksum-maven-plugin-version>
