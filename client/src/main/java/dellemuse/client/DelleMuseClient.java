@@ -181,7 +181,9 @@ public class DelleMuseClient {
 
             if (isSSL() && isAcceptAllCertificates()) {
                 try {
-                    ignoreCertCheck();
+                    
+                	ignoreCertCheck();
+                    
                 } catch (KeyManagementException | NoSuchAlgorithmException e) {
                     throw new IllegalStateException(e);
                 }
@@ -387,13 +389,8 @@ public class DelleMuseClient {
         sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
         final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
 
-        this.httpClient = this.httpClient.newBuilder().sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0])
-                .hostnameVerifier(new HostnameVerifier() {
-                    @Override
-                    public boolean verify(String hostname, SSLSession session) {
-                        return true;
-                    }
-                }).build();
+
+
     }
 
     
